@@ -22,7 +22,7 @@ public class QuotesController : ControllerBase
     [ProducesResponseType(200, Type = typeof(QuoteDto))]
     public async Task<ActionResult<QuoteDto>> GetQuotePrice(string currencyPair, [FromQuery] string source)
     {
-        var quote = await _quoteService.GetQuoteAsync(source, currencyPair);
+        var quote = await _quoteService.GetQuoteAsync(source, currencyPair.Replace("/", ""));
         if (quote != null)
         {
             var quoteDto = _mapper.Map<QuoteDto>(quote);

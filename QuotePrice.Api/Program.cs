@@ -1,8 +1,8 @@
 using QuotePrice.Api.Mappers;
+using QuotePrice.Api.Middlewares;
 using QuotePrice.Domain;
 using QuotePrice.Domain.Services;
 using QuotePrice.Infrastructure.Mappers;
-using QuotePrice.Infrastructure.Providers;
 using QuotePrice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,8 +33,6 @@ void ConfigureServices(IServiceCollection services)
 
 void AddServices(IServiceCollection services)
 {
-    // services.AddScoped<BitfinexQuoteProvider>();
-    // services.AddScoped<BitstampQuoteProvider>();
     services.AddScoped<IQuoteService, QuoteService>();
     services.AddScoped<IQuoteSourceService, QuoteSourceService>();
     services.AddScoped<IQuoteProviderFactory, QuoteProviderFactory>();
@@ -48,6 +46,8 @@ void Configure()
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
 
     app.UseHttpsRedirection();
 

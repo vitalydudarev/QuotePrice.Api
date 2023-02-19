@@ -37,8 +37,10 @@ public class QuoteProviderBase<T> : IQuoteProvider
                 var response = JsonSerializer.Deserialize<T>(responseString, _jsonSerializerOptions);
                 
                 _logger.LogInformation("Request executed successfully");
-        
-                return response != null ? _mapper.Map<Quote>(response) : null;
+
+                return response != null
+                    ? _mapper.Map<Quote>(response, options => options.AfterMap((o, quote) => quote.Pair = currencyPair))
+                    : null;
             }
         }
         catch (Exception e)
