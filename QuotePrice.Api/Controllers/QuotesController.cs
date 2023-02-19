@@ -42,7 +42,5 @@ public class QuotesController : ControllerBase
         var quoteDtos = _mapper.Map<IEnumerable<QuoteDto>>(quotes);
             
         return Ok(quoteDtos);
-
-        return BadRequest();
     }
 }

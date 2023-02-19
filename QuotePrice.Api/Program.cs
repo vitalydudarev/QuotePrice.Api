@@ -7,11 +7,13 @@ using QuotePrice.Domain.Services;
 using QuotePrice.Infrastructure.Database;
 using QuotePrice.Infrastructure.Mappers;
 using QuotePrice.Infrastructure.Repositories;
+using QuotePrice.Postgres;
 using QuotePrice.Services;
+using QuotePrice.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigureServices(builder.Services);
+ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,7 +22,7 @@ Configure();
 app.Run();
 
 
-void ConfigureServices(IServiceCollection services)
+void ConfigureServices(IServiceCollection services, ConfigurationManager configurationManager)
 {
     services.AddControllers();
     services.AddEndpointsApiExplorer();
@@ -32,8 +34,73 @@ void ConfigureServices(IServiceCollection services)
         config.AddProfile<ResponseModelMappingProfile>();
         config.AddProfile<ModelDbEntityMappingProfile>();
     });
-    services.AddDbContext<QuoteDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "Test"));
     
+    var databaseType = configurationManager.GetValue<string>("DatabaseType");
+
+    services.AddDbContext<QuoteDbContext>(opt =>
+    {
+        switch (databaseType)
+        {
+            case "InMemory":
+                opt.UseInMemoryDatabase(databaseName: "Test");
+                break;
+
+            case "Sqlite":
+            {
+                var connectionString = configurationManager.GetConnectionString("Sqlite");
+                var migrationsAssembly = typeof(SqliteMigrations).Assembly.GetName().Name;
+                
+                opt.UseSqlite(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(migrationsAssembly));
+            }
+                break;
+            
+            case "Postgres":
+            {
+                var connectionString = configurationManager.GetConnectionString("Postgres");
+                var migrationsAssembly = typeof(PostgresMigrations).Assembly.GetName().Name;
+
+                opt.UseNpgsql(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(migrationsAssembly));
+            }
+                break;
+        }
+    });
+        
+    /*switch (databaseType)
+    {
+        case "InMemory":
+            services.AddDbContext<QuoteDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "Test"));
+            break;
+
+        case "Sqlite":
+        {
+            var connectionString = configurationManager.GetConnectionString("Sqlite");
+            services.AddDbContext<QuoteDbContext>(opt =>
+                opt.UseSqlite(connectionString,
+                    optionsBuilder =>
+                        optionsBuilder.MigrationsAssembly(typeof(SqliteMigrations).Assembly.GetName().Name)));
+        }
+            break;
+
+        case "Postgres":
+        {
+            var connectionString = configurationManager.GetConnectionString("Postgres");
+            services.AddDbContext<QuoteDbContext>(opt =>
+                opt.UseNpgsql(connectionString,
+                    optionsBuilder =>
+                        optionsBuilder.MigrationsAssembly(typeof(PostgresMigrations).Assembly.GetName().Name)));
+        }
+            break;
+    }*/
+    
+    /*"ConnectionStrings": {
+        "Sqlite" : "Data Source=vehicles.db",
+        "Postgres" : "User ID=postgres;Password=Pass123!;Server=localhost;Port=5432;Database=vehicles;"
+    }
+    
+    // services.AddDbContext<QuoteDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "Test"));
+    services.AddDbContext<QuoteDbContext>(opt =>
+        opt.UseSqlite($"Data Source=quotes.db", optionsBuilder => optionsBuilder.MigrationsAssembly("rrrr")));
+    */
     AddServices(services);
 }
 

@@ -8,11 +8,19 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.3" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Migrations\QuotePrice.Postgres\QuotePrice.Postgres.csproj" />
+      <ProjectReference Include="..\Migrations\QuotePrice.Sqlite\QuotePrice.Sqlite.csproj" />
       <ProjectReference Include="..\QuotePrice.Infrastructure\QuotePrice.Infrastructure.csproj" />
       <ProjectReference Include="..\QuotePrice.Services\QuotePrice.Services.csproj" />
     </ItemGroup>

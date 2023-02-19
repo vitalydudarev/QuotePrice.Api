@@ -12,6 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B73112D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotePrice.Tests", "QuotePrice.Tests\QuotePrice.Tests.csproj", "{854F27E4-9671-4366-8601-E609EB6F5919}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{BD3A6E35-C497-4814-A23A-BE0F6E543971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotePrice.Sqlite", "Migrations\QuotePrice.Sqlite\QuotePrice.Sqlite.csproj", "{3DC8C9FC-16D1-449F-83E1-DEB756968096}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotePrice.Postgres", "Migrations\QuotePrice.Postgres\QuotePrice.Postgres.csproj", "{B19488A1-A2C3-4541-BAB1-6EE130075C04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,8 +44,18 @@ Global
 		{854F27E4-9671-4366-8601-E609EB6F5919}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{854F27E4-9671-4366-8601-E609EB6F5919}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{854F27E4-9671-4366-8601-E609EB6F5919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC8C9FC-16D1-449F-83E1-DEB756968096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC8C9FC-16D1-449F-83E1-DEB756968096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC8C9FC-16D1-449F-83E1-DEB756968096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC8C9FC-16D1-449F-83E1-DEB756968096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B19488A1-A2C3-4541-BAB1-6EE130075C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19488A1-A2C3-4541-BAB1-6EE130075C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19488A1-A2C3-4541-BAB1-6EE130075C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19488A1-A2C3-4541-BAB1-6EE130075C04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{854F27E4-9671-4366-8601-E609EB6F5919} = {3B73112D-5521-43D7-8D78-7E7443A7185A}
+		{3DC8C9FC-16D1-449F-83E1-DEB756968096} = {BD3A6E35-C497-4814-A23A-BE0F6E543971}
+		{B19488A1-A2C3-4541-BAB1-6EE130075C04} = {BD3A6E35-C497-4814-A23A-BE0F6E543971}
 	EndGlobalSection
 EndGlobal
