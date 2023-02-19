@@ -37,16 +37,11 @@ public class QuotesController : ControllerBase
     [ProducesResponseType(200, Type = typeof(IEnumerable<QuoteDto>))]
     public async Task<ActionResult<IEnumerable<QuoteDto>>> GetQuotePriceHistory(string currencyPair)
     {
-        var quote = await _quoteService.GetQuoteAsync("source", currencyPair);
-        if (quote != null)
-        {
-            return Ok(new QuoteDto
-            {
-                Ask = quote.Ask,
-                Bid = quote.Bid,
-                Timestamp = quote.Timestamp
-            });
-        }
+        var quotes = await _quoteService.GetQuoteHistoryAsync(null, null);
+        
+        var quoteDtos = _mapper.Map<IEnumerable<QuoteDto>>(quotes);
+            
+        return Ok(quoteDtos);
 
         return BadRequest();
     }

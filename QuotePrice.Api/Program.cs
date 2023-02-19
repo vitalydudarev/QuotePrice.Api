@@ -1,8 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 using QuotePrice.Api.Mappers;
 using QuotePrice.Api.Middlewares;
 using QuotePrice.Domain;
+using QuotePrice.Domain.Repositories;
 using QuotePrice.Domain.Services;
+using QuotePrice.Infrastructure.Database;
 using QuotePrice.Infrastructure.Mappers;
+using QuotePrice.Infrastructure.Repositories;
 using QuotePrice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +30,9 @@ void ConfigureServices(IServiceCollection services)
     {
         config.AddProfile<ModelDtoMappingProfile>();
         config.AddProfile<ResponseModelMappingProfile>();
+        config.AddProfile<ModelDbEntityMappingProfile>();
     });
+    services.AddDbContext<QuoteDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "Test"));
     
     AddServices(services);
 }
@@ -36,6 +42,8 @@ void AddServices(IServiceCollection services)
     services.AddScoped<IQuoteService, QuoteService>();
     services.AddScoped<IQuoteSourceService, QuoteSourceService>();
     services.AddScoped<IQuoteProviderFactory, QuoteProviderFactory>();
+    services.AddScoped<IQuoteStoreService, QuoteStoreService>();
+    services.AddScoped<IQuoteRepository, QuoteRepository>();
 }
 
 void Configure()

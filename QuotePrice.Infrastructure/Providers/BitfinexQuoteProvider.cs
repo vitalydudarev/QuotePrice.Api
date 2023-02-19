@@ -7,7 +7,7 @@ namespace QuotePrice.Infrastructure.Providers;
 public class BitfinexQuoteProvider : QuoteProviderBase<BitfinexQuoteResponse>
 {
     public BitfinexQuoteProvider(ILogger logger, IMapper mapper, HttpClient httpClient, string url) 
-        : base(logger, mapper, httpClient, url)
+        : base(logger, mapper, httpClient, url, "Bitfinex")
     {
     }
 }

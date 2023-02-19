@@ -5,4 +5,5 @@ namespace QuotePrice.Domain.Services;
 public interface IQuoteService
 {
     Task<Quote?> GetQuoteAsync(string source, string currencyPair);
+    Task<IEnumerable<Quote>> GetQuoteHistoryAsync(string source, string currencyPair);
 }

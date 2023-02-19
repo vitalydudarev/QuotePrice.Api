@@ -1,14 +1,11 @@
-namespace QuotePrice.Domain.Models;
+namespace QuotePrice.Infrastructure.Database.Entities;
 
-public class Quote
+public class DbQuote
 {
+    public long Id { get; set; }
     public string Pair { get; set; } = null!;
     public string Source { get; set; } = null!;
     public double? Timestamp { get; set; }
     public double? Bid { get; set; }
     public double? Ask { get; set; }
-    public double? Low { get; set; }
-    public double? High { get; set; }
-    public double? Last { get; set; }
-    public double? Volume { get; set; }
 }

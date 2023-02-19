@@ -1,8 +1,8 @@
 using QuotePrice.Domain.Models;
 
-namespace QuotePrice.Domain.Repositories;
+namespace QuotePrice.Domain.Services;
 
-public interface IQuoteRepository
+public interface IQuoteStoreService
 {
     Task SaveAsync(Quote quote);
     Task<IEnumerable<Quote>> GetAllAsync();

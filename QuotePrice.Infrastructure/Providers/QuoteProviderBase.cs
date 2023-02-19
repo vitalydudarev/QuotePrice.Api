@@ -12,18 +12,20 @@ public class QuoteProviderBase<T> : IQuoteProvider
     private readonly IMapper _mapper;
     private readonly HttpClient _httpClient;
     private readonly string _url;
+    private readonly string _sourceName;
 
     private readonly JsonSerializerOptions? _jsonSerializerOptions = new()
     {
         PropertyNamingPolicy = new SnakeCaseNamingPolicy()
     };
 
-    public QuoteProviderBase(ILogger logger, IMapper mapper, HttpClient httpClient, string url)
+    protected QuoteProviderBase(ILogger logger, IMapper mapper, HttpClient httpClient, string url, string sourceName)
     {
         _logger = logger;
         _mapper = mapper;
         _httpClient = httpClient;
         _url = url;
+        _sourceName = sourceName;
     }
 
     public async Task<Quote?> GetQuoteAsync(string currencyPair)
@@ -39,7 +41,11 @@ public class QuoteProviderBase<T> : IQuoteProvider
                 _logger.LogInformation("Request executed successfully");
 
                 return response != null
-                    ? _mapper.Map<Quote>(response, options => options.AfterMap((o, quote) => quote.Pair = currencyPair))
+                    ? _mapper.Map<Quote>(response, options => options.AfterMap((_, quote) =>
+                    {
+                        quote.Pair = currencyPair;
+                        quote.Source = _sourceName;
+                    }))
                     : null;
             }
         }
