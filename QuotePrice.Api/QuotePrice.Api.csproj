@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\QuotePrice.Infrastructure\QuotePrice.Infrastructure.csproj" />
       <ProjectReference Include="..\QuotePrice.Services\QuotePrice.Services.csproj" />
     </ItemGroup>
 

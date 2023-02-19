@@ -1,6 +1,6 @@
-namespace QuotePrice.Services.Responses;
+namespace QuotePrice.Infrastructure.Responses;
 
-public class BitstampQuotePriceResponse
+public class BitstampQuoteResponse
 {
     public string? Timestamp { get; set; }
     public string? Bid { get; set; }

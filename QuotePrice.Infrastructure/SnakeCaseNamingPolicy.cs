@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace QuotePrice.Services;
+namespace QuotePrice.Infrastructure;
 
 public class SnakeCaseNamingPolicy : JsonNamingPolicy
 {

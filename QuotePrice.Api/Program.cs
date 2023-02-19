@@ -1,3 +1,6 @@
+using QuotePrice.Domain;
+using QuotePrice.Domain.Services;
+using QuotePrice.Infrastructure.Providers;
 using QuotePrice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +26,11 @@ void ConfigureServices(IServiceCollection services)
 
 void AddServices(IServiceCollection services)
 {
-    services.AddScoped<BitfinexQuotePriceProvider>();
-    services.AddScoped<BitstampQuotePriceProvider>();
+    services.AddScoped<BitfinexQuoteProvider>();
+    services.AddScoped<BitstampQuoteProvider>();
+    services.AddScoped<IQuoteService, QuoteService>();
+    services.AddScoped<IQuoteSourceService, QuoteSourceService>();
+    services.AddScoped<IQuoteProviderFactory, QuoteProviderFactory>();
 }
 
 void Configure()

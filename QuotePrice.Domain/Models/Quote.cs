@@ -1,6 +1,6 @@
 namespace QuotePrice.Domain.Models;
 
-public class QuotePrice
+public class Quote
 {
     public double? Timestamp { get; set; }
     public double? Bid { get; set; }

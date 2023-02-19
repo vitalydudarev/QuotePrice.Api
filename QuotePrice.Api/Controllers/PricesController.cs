@@ -1,20 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using QuotePrice.Api.DTOs;
-using QuotePrice.Services;
+using QuotePrice.Infrastructure.Providers;
 
 namespace QuotePrice.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class PricesController : ControllerBase
 {
     // private readonly BitfinexQuotePriceProvider _quotePriceProvider;
-    private readonly BitstampQuotePriceProvider _quotePriceProvider;
+    private readonly BitstampQuoteProvider _quoteProvider;
 
-    public PricesController(BitstampQuotePriceProvider quotePriceProvider)
+    public PricesController(BitstampQuoteProvider quoteProvider)
     // public PricesController(BitfinexQuotePriceProvider quotePriceProvider)
     {
-        _quotePriceProvider = quotePriceProvider;
+        _quoteProvider = quoteProvider;
     }
     // add logging
     //
@@ -27,20 +27,34 @@ public class PricesController : ControllerBase
     }*/
     
     [HttpGet]
-    [ProducesResponseType(200, Type = typeof(QuotePriceDto))]
-    public async Task<ActionResult<QuotePriceDto>> GetQuotePrice(string currencyPair)
+    [ProducesResponseType(200, Type = typeof(QuoteDto))]
+    public async Task<ActionResult<QuoteDto>> GetQuotePrice(string currencyPair)
     {
-        var quotePrice = await _quotePriceProvider.GetPriceAsync(currencyPair);
+        var quotePrice = await _quoteProvider.GetQuoteAsync(currencyPair);
         if (quotePrice != null)
         {
-            return Ok(new QuotePriceDto
+            return Ok(new QuoteDto
             {
                 Ask = quotePrice.Ask,
                 Bid = quotePrice.Bid,
-                High = quotePrice.High,
-                Low = quotePrice.Low,
-                Last = quotePrice.Last,
-                Volume = quotePrice.Volume,
+                Timestamp = quotePrice.Timestamp
+            });
+        }
+
+        return BadRequest();
+    }
+    
+    [HttpGet]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<QuoteDto>))]
+    public async Task<ActionResult<IEnumerable<QuoteDto>>> GetQuotePriceHistory(string currencyPair)
+    {
+        var quotePrice = await _quoteProvider.GetQuoteAsync(currencyPair);
+        if (quotePrice != null)
+        {
+            return Ok(new QuoteDto
+            {
+                Ask = quotePrice.Ask,
+                Bid = quotePrice.Bid,
                 Timestamp = quotePrice.Timestamp
             });
         }

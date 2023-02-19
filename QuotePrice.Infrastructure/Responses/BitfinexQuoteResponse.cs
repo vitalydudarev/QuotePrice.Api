@@ -1,6 +1,6 @@
-namespace QuotePrice.Services.Responses;
+namespace QuotePrice.Infrastructure.Responses;
 
-public class BitfinexQuotePriceResponse
+public class BitfinexQuoteResponse
 {
     public string? Timestamp { get; set; }
     public string? Mid { get; set; }

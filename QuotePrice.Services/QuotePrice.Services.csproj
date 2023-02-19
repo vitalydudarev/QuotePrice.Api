@@ -8,6 +8,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\QuotePrice.Domain\QuotePrice.Domain.csproj" />
+      <ProjectReference Include="..\QuotePrice.Infrastructure\QuotePrice.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.14\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
