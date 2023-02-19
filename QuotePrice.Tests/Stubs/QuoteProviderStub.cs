@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using QuotePrice.Domain;
 using QuotePrice.Domain.Models;
 
-namespace QuotePrice.Services.Tests.Stubs;
+namespace QuotePrice.Tests.Stubs;
 
 public class QuoteProviderStub : IQuoteProvider
 {

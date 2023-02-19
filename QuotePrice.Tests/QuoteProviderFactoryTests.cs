@@ -5,9 +5,10 @@ using QuotePrice.Domain;
 using QuotePrice.Domain.Models;
 using QuotePrice.Domain.Services;
 using QuotePrice.Infrastructure.Providers;
-using QuotePrice.Services.Tests.Stubs;
+using QuotePrice.Services;
+using QuotePrice.Tests.Stubs;
 
-namespace QuotePrice.Services.Tests;
+namespace QuotePrice.Tests;
 
 public class QuoteProviderFactoryTests
 {
