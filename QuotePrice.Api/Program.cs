@@ -1,5 +1,7 @@
+using QuotePrice.Api.Mappers;
 using QuotePrice.Domain;
 using QuotePrice.Domain.Services;
+using QuotePrice.Infrastructure.Mappers;
 using QuotePrice.Infrastructure.Providers;
 using QuotePrice.Services;
 
@@ -20,14 +22,19 @@ void ConfigureServices(IServiceCollection services)
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
     services.AddHttpClient();
+    builder.Services.AddAutoMapper(config =>
+    {
+        config.AddProfile<ModelDtoMappingProfile>();
+        config.AddProfile<ResponseModelMappingProfile>();
+    });
     
     AddServices(services);
 }
 
 void AddServices(IServiceCollection services)
 {
-    services.AddScoped<BitfinexQuoteProvider>();
-    services.AddScoped<BitstampQuoteProvider>();
+    // services.AddScoped<BitfinexQuoteProvider>();
+    // services.AddScoped<BitstampQuoteProvider>();
     services.AddScoped<IQuoteService, QuoteService>();
     services.AddScoped<IQuoteSourceService, QuoteSourceService>();
     services.AddScoped<IQuoteProviderFactory, QuoteProviderFactory>();

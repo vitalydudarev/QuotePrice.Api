@@ -29,7 +29,7 @@ public class QuoteProviderFactoryTests
             }
         });
         
-        var factory = new QuoteProviderFactory(new NullLoggerFactory(), new HttpClient(), mock.Object);
+        var factory = new QuoteProviderFactory(new NullLoggerFactory(), null, new HttpClient(), mock.Object);
 
         var provider = factory.CreateProvider(quoteSourceName);
         

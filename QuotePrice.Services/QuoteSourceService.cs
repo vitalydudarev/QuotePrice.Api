@@ -14,15 +14,20 @@ public class QuoteSourceService : IQuoteSourceService
             new QuoteSource
             {
                 Name = "Bitfinex",
-                Url = "https://api.bitfinex.com/v1/pubticker/",
-                ImplementationClass = nameof(BitfinexQuoteProvider)
+                Url = "https://api.bitfinex.com/v1/pubticker",
+                ImplementationClass = GetImplementationClassName(typeof(BitfinexQuoteProvider))
             },
             new QuoteSource
             {
                 Name = "Bitstamp",
-                Url = "https://www.bitstamp.net/api/v2/ticker/",
-                ImplementationClass = nameof(BitstampQuoteProvider)
+                Url = "https://www.bitstamp.net/api/v2/ticker",
+                ImplementationClass = GetImplementationClassName(typeof(BitstampQuoteProvider))
             }
         };
+    }
+
+    private static string GetImplementationClassName(Type type)
+    {
+        return $"{type.FullName}, {type.Assembly.FullName}";
     }
 }
