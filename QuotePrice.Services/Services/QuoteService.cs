@@ -46,11 +46,11 @@ public class QuoteService : IQuoteService
         return null;
     }
     
-    public async Task<IEnumerable<Quote>> GetQuoteHistoryAsync(string source, string currencyPair)
+    public async Task<IEnumerable<Quote>> GetQuoteHistoryAsync(QuoteQueryParameters? parameters)
     {
         try
         {
-            var quotes = await _quoteStoreService.GetAllAsync();
+            var quotes = await _quoteStoreService.GetAllAsync(parameters);
 
             return quotes;
         }

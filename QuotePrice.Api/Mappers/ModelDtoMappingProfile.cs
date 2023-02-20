@@ -10,6 +10,8 @@ public class ModelDtoMappingProfile : Profile
     {
         CreateMap<Quote, QuoteDto>()
             .ForMember(a => a.Timestamp, expr => expr.MapFrom(b => RoundDouble(b.Timestamp)));
+
+        CreateMap<QuoteHistoryRequest, QuoteQueryParameters>();
     }
 
     // this conversion may affect the performance

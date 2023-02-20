@@ -29,11 +29,11 @@ public class QuoteStoreService : IQuoteStoreService
         }
     }
 
-    public Task<IEnumerable<Quote>> GetAllAsync()
+    public Task<IEnumerable<Quote>> GetAllAsync(QuoteQueryParameters? parameters)
     {
         try
         {
-            return _quoteRepository.GetAllAsync();
+            return _quoteRepository.GetAllAsync(parameters);
         }
         catch (Exception e)
         {

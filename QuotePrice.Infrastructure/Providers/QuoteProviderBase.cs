@@ -26,7 +26,7 @@ public class QuoteProviderBase<T> : IQuoteProvider
         _sourceName = sourceName;
     }
 
-    public async Task<Quote?> GetQuoteAsync(string currencyPair)
+    public virtual async Task<Quote?> GetQuoteAsync(string currencyPair)
     {
         using IServiceScope scope = _serviceScopeFactory.CreateScope();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<QuoteProviderBase<T>>>();

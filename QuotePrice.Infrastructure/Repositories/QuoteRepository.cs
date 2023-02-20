@@ -36,11 +36,14 @@ public class QuoteRepository : IQuoteRepository
         }
     }
 
-    public async Task<IEnumerable<Quote>> GetAllAsync()
+    public async Task<IEnumerable<Quote>> GetAllAsync(QuoteQueryParameters? parameters)
     {
         try
         {
-            var dbQuotes = await _context.Quotes.ToListAsync();
+            var queryable = _context.Quotes.AsQueryable().AsNoTracking();
+            queryable = HandleQueryParameters(queryable, parameters);
+            
+            var dbQuotes = await queryable.ToListAsync();
 
             return _mapper.Map<IEnumerable<Quote>>(dbQuotes);
         }
@@ -49,5 +52,23 @@ public class QuoteRepository : IQuoteRepository
             _logger.LogError(e, "An error has occured while retrieving entities: {Error}", e.Message);
             throw new Exception("An error has occured while retrieving entities");
         }
+    }
+
+    private static IQueryable<DbQuote> HandleQueryParameters(IQueryable<DbQuote> queryable, QuoteQueryParameters? parameters)
+    {
+        if (parameters != null)
+        {
+            if (parameters.CurrencyPair != null)
+            {
+                queryable = queryable.Where(a => EF.Functions.Like(a.Source, $"%{parameters.CurrencyPair}%"));
+            }
+
+            if (parameters.Source != null)
+            {
+                queryable = queryable.Where(a => EF.Functions.Like(a.Source, $"%{parameters.Source}%"));
+            }
+        }
+
+        return queryable;
     }
 }

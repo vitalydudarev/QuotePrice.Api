@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using QuotePrice.Api.Mappers;
 using QuotePrice.Api.Middlewares;
@@ -28,7 +29,10 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
 {
     services.AddControllers();
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
+    services.AddSwaggerGen(c =>
+    {
+        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    });
     services.AddHttpClient();
     builder.Services.AddAutoMapper(config =>
     {
