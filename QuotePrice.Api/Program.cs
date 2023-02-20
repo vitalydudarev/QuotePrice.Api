@@ -19,6 +19,7 @@ ConfigureServices(builder.Services, builder.Configuration);
 var app = builder.Build();
 
 Configure();
+await ApplyDatabaseMigrationsAsync();
 
 app.Run();
 
@@ -37,72 +38,8 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     });
     services.AddMemoryCache();
     
-    var databaseType = configurationManager.GetValue<string>("DatabaseType");
+    ConfigureDatabase(configurationManager, services);
 
-    services.AddDbContext<QuoteDbContext>(opt =>
-    {
-        switch (databaseType)
-        {
-            case "InMemory":
-                opt.UseInMemoryDatabase(databaseName: "Test");
-                break;
-
-            case "Sqlite":
-            {
-                var connectionString = configurationManager.GetConnectionString("Sqlite");
-                var migrationsAssembly = typeof(SqliteMigrations).Assembly.GetName().Name;
-                
-                opt.UseSqlite(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(migrationsAssembly));
-            }
-                break;
-            
-            case "Postgres":
-            {
-                var connectionString = configurationManager.GetConnectionString("Postgres");
-                var migrationsAssembly = typeof(PostgresMigrations).Assembly.GetName().Name;
-
-                opt.UseNpgsql(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(migrationsAssembly));
-            }
-                break;
-        }
-    });
-        
-    /*switch (databaseType)
-    {
-        case "InMemory":
-            services.AddDbContext<QuoteDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "Test"));
-            break;
-
-        case "Sqlite":
-        {
-            var connectionString = configurationManager.GetConnectionString("Sqlite");
-            services.AddDbContext<QuoteDbContext>(opt =>
-                opt.UseSqlite(connectionString,
-                    optionsBuilder =>
-                        optionsBuilder.MigrationsAssembly(typeof(SqliteMigrations).Assembly.GetName().Name)));
-        }
-            break;
-
-        case "Postgres":
-        {
-            var connectionString = configurationManager.GetConnectionString("Postgres");
-            services.AddDbContext<QuoteDbContext>(opt =>
-                opt.UseNpgsql(connectionString,
-                    optionsBuilder =>
-                        optionsBuilder.MigrationsAssembly(typeof(PostgresMigrations).Assembly.GetName().Name)));
-        }
-            break;
-    }*/
-    
-    /*"ConnectionStrings": {
-        "Sqlite" : "Data Source=vehicles.db",
-        "Postgres" : "User ID=postgres;Password=Pass123!;Server=localhost;Port=5432;Database=vehicles;"
-    }
-    
-    // services.AddDbContext<QuoteDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "Test"));
-    services.AddDbContext<QuoteDbContext>(opt =>
-        opt.UseSqlite($"Data Source=quotes.db", optionsBuilder => optionsBuilder.MigrationsAssembly("rrrr")));
-    */
     AddServices(services);
 }
 
@@ -131,4 +68,51 @@ void Configure()
     app.UseAuthorization();
 
     app.MapControllers();
+}
+
+void ConfigureDatabase(ConfigurationManager configurationManager, IServiceCollection services)
+{
+    var databaseType = configurationManager.GetValue<string>("DatabaseType");
+
+    services.AddDbContext<QuoteDbContext>(opt =>
+    {
+        switch (databaseType)
+        {
+            case "InMemory":
+                opt.UseInMemoryDatabase(databaseName: "Test");
+                break;
+
+            case "Sqlite":
+            {
+                var connectionString = configurationManager.GetConnectionString("Sqlite");
+                var migrationsAssembly = typeof(SqliteMigrations).Assembly.GetName().Name;
+                
+                opt.UseSqlite(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(migrationsAssembly));
+            }
+                break;
+            
+            case "Postgres":
+            {
+                var connectionString = configurationManager.GetConnectionString("Postgres");
+                var migrationsAssembly = typeof(PostgresMigrations).Assembly.GetName().Name;
+
+                opt.UseNpgsql(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(migrationsAssembly));
+            }
+                break;
+            
+            default:
+                throw new Exception("Unsupported database provider");
+        }
+    });
+}
+
+async Task ApplyDatabaseMigrationsAsync()
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    await using var context = scope.ServiceProvider.GetService<QuoteDbContext>();
+
+    if (context != null && context.Database.IsRelational())
+    {
+        await context.Database.MigrateAsync();
+    }
 }
