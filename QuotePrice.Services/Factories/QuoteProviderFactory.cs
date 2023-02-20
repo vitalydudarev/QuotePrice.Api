@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using QuotePrice.Domain;
 using QuotePrice.Domain.Services;
 
-namespace QuotePrice.Services;
+namespace QuotePrice.Services.Factories;
 
 public class QuoteProviderFactory : IQuoteProviderFactory
 {
@@ -43,7 +43,7 @@ public class QuoteProviderFactory : IQuoteProviderFactory
         var type = Type.GetType(quoteSource.ImplementationClass);
         if (type != null)
         {
-            var parameters = new object[] {_serviceScopeFactory,  quoteSource.Url};
+            var parameters = new object[] {_serviceScopeFactory,  quoteSource.Url, quoteSource.Name};
 
             try
             {

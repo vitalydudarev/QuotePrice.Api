@@ -18,6 +18,7 @@ public class QuoteProviderBase<T> : IQuoteProvider
         PropertyNamingPolicy = new SnakeCaseNamingPolicy()
     };
 
+    // instead of url there should be provided provider options that contain the url and other settings
     protected QuoteProviderBase(IServiceScopeFactory serviceScopeFactory, string url, string sourceName)
     {
         _serviceScopeFactory = serviceScopeFactory;

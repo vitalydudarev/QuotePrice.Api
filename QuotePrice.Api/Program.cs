@@ -8,7 +8,8 @@ using QuotePrice.Infrastructure.Database;
 using QuotePrice.Infrastructure.Mappers;
 using QuotePrice.Infrastructure.Repositories;
 using QuotePrice.Postgres;
-using QuotePrice.Services;
+using QuotePrice.Services.Factories;
+using QuotePrice.Services.Services;
 using QuotePrice.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);

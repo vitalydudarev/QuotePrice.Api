@@ -2,7 +2,7 @@ using QuotePrice.Domain.Models;
 using QuotePrice.Domain.Services;
 using QuotePrice.Infrastructure.Providers;
 
-namespace QuotePrice.Services;
+namespace QuotePrice.Services.Services;
 
 public class QuoteSourceService : IQuoteSourceService
 {

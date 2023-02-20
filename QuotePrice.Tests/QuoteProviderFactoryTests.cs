@@ -5,6 +5,7 @@ using Moq;
 using QuotePrice.Domain.Models;
 using QuotePrice.Domain.Services;
 using QuotePrice.Services;
+using QuotePrice.Services.Factories;
 using QuotePrice.Tests.Stubs;
 
 namespace QuotePrice.Tests;

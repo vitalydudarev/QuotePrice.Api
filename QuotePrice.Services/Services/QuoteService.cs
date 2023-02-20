@@ -3,7 +3,7 @@ using QuotePrice.Domain;
 using QuotePrice.Domain.Models;
 using QuotePrice.Domain.Services;
 
-namespace QuotePrice.Services;
+namespace QuotePrice.Services.Services;
 
 public class QuoteService : IQuoteService
 {
