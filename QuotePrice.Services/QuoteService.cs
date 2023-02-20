@@ -40,6 +40,7 @@ public class QuoteService : IQuoteService
         catch (Exception e)
         {
             _logger.LogError(e, "An error has occured: {Error}", e.Message);
+            throw;
         }
 
         return null;

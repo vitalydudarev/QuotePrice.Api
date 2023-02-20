@@ -34,6 +34,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
         config.AddProfile<ResponseModelMappingProfile>();
         config.AddProfile<ModelDbEntityMappingProfile>();
     });
+    services.AddMemoryCache();
     
     var databaseType = configurationManager.GetValue<string>("DatabaseType");
 

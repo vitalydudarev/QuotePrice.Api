@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using QuotePrice.Domain;
 using QuotePrice.Domain.Models;
 using QuotePrice.Domain.Services;
-using QuotePrice.Infrastructure.Providers;
 using QuotePrice.Services;
 using QuotePrice.Tests.Stubs;
 
@@ -30,10 +29,19 @@ public class QuoteProviderFactoryTests
             }
         });
         
-        var factory = new QuoteProviderFactory(new NullLoggerFactory(), null, new HttpClient(), mock.Object);
+        var factory = new QuoteProviderFactory(new NullLogger<QuoteProviderFactory>(), null, mock.Object, GetMemoryCache());
 
         var provider = factory.CreateProvider(quoteSourceName);
         
         Assert.NotNull(provider);
+    }
+
+    private static IMemoryCache GetMemoryCache()
+    {
+        var services = new ServiceCollection();
+        services.AddMemoryCache();
+        var serviceProvider = services.BuildServiceProvider();
+
+        return serviceProvider.GetService<IMemoryCache>();
     }
 }

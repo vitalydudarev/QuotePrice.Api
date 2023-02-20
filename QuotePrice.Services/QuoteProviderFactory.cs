@@ -1,4 +1,5 @@
-using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QuotePrice.Domain;
 using QuotePrice.Domain.Services;
@@ -8,22 +9,20 @@ namespace QuotePrice.Services;
 public class QuoteProviderFactory : IQuoteProviderFactory
 {
     private readonly ILogger<QuoteProviderFactory> _logger;
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly IMapper _mapper;
-    private readonly HttpClient _httpClient;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly IQuoteSourceService _quoteSourceService;
+    private readonly IMemoryCache _memoryCache;
 
     public QuoteProviderFactory(
-        ILoggerFactory loggerFactory,
-        IMapper mapper,
-        HttpClient httpClient,
-        IQuoteSourceService quoteSourceService)
+        ILogger<QuoteProviderFactory> logger,
+        IServiceScopeFactory serviceScopeFactory,
+        IQuoteSourceService quoteSourceService,
+        IMemoryCache memoryCache)
     {
-        _logger = loggerFactory.CreateLogger<QuoteProviderFactory>();
-        _loggerFactory = loggerFactory;
-        _mapper = mapper;
-        _httpClient = httpClient;
+        _logger = logger;
+        _serviceScopeFactory = serviceScopeFactory;
         _quoteSourceService = quoteSourceService;
+        _memoryCache = memoryCache;
     }
     
     public IQuoteProvider? CreateProvider(string source)
@@ -35,18 +34,24 @@ public class QuoteProviderFactory : IQuoteProviderFactory
             throw new Exception($"Provider source {source} not found");
         }
 
+        var cachedProvider = _memoryCache.Get<IQuoteProvider>(quoteSource.ImplementationClass);
+        if (cachedProvider != null)
+        {
+            return cachedProvider;
+        }
+
         var type = Type.GetType(quoteSource.ImplementationClass);
         if (type != null)
         {
-            var logger = _loggerFactory.CreateLogger(type);
-
-            var parameters = new object[] {logger, _mapper, _httpClient, quoteSource.Url};
+            var parameters = new object[] {_serviceScopeFactory,  quoteSource.Url};
 
             try
             {
                 var instance = Activator.CreateInstance(type, parameters);
                 if (instance != null)
                 {
+                    // TODO: all instances should be disposed at a later stage - implement it
+                    _memoryCache.Set(quoteSource.ImplementationClass, instance);
                     return (IQuoteProvider)instance;
                 }
             }
