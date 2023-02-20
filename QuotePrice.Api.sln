@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotePrice.Infrastructure",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B73112D-5521-43D7-8D78-7E7443A7185A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotePrice.Tests", "QuotePrice.Tests\QuotePrice.Tests.csproj", "{854F27E4-9671-4366-8601-E609EB6F5919}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotePrice.Tests", "Tests\QuotePrice.Tests\QuotePrice.Tests.csproj", "{854F27E4-9671-4366-8601-E609EB6F5919}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{BD3A6E35-C497-4814-A23A-BE0F6E543971}"
 EndProject
