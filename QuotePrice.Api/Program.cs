@@ -34,7 +34,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
     });
     services.AddHttpClient();
-    builder.Services.AddAutoMapper(config =>
+    services.AddAutoMapper(config =>
     {
         config.AddProfile<ModelDtoMappingProfile>();
         config.AddProfile<ResponseModelMappingProfile>();

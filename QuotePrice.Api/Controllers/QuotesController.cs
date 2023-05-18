@@ -51,6 +51,7 @@ public class QuotesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<QuoteDto>))]
     public async Task<ActionResult<IEnumerable<QuoteDto>>> GetQuotePriceHistory([FromQuery] QuoteHistoryRequest? request)
     {
+        // TODO: add pagination
         var requestParameters = _mapper.Map<QuoteQueryParameters>(request);
         var quotes = await _quoteService.GetQuoteHistoryAsync(requestParameters);
         

@@ -1,0 +1,7 @@
+﻿services:
+  quoteprice.api:
+    container_name: quoteprice_api
+    image: quoteprice.api
+    build:
+      context: .
+      dockerfile: QuotePrice.Api/Dockerfile

@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,6 +25,12 @@
       <ProjectReference Include="..\Migrations\QuotePrice.Sqlite\QuotePrice.Sqlite.csproj" />
       <ProjectReference Include="..\QuotePrice.Infrastructure\QuotePrice.Infrastructure.csproj" />
       <ProjectReference Include="..\QuotePrice.Services\QuotePrice.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
